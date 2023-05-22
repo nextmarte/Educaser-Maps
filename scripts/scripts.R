@@ -6,7 +6,7 @@ library(leaflet)
 library(htmltools)
 library(dplyr)
 
-# Crie o data frame com os dados do trajeto
+# Cria o data frame com os dados do trajeto
 dados_trajeto <- data.frame(
   data = c("9 de março", "14 de março", "22 de março", "29 e 30 de março", "10 de abril", "18 de abril", "22 de abril", "22 de abril de 1500"),
   descricao = c("Zarparam de Lisboa", "Passaram pelas Ilhas Canárias", "Passaram por Cabo Verde",
@@ -25,7 +25,7 @@ dados_trajeto <- data.frame(
             "ONU", "enauti", "gstatic", "historia-brasil.com", "wikipedia", "Brasil Escola")
 )
 
-# Defina as coordenadas aproximadas do trajeto da esquadra de Cabral no mar
+# Define as coordenadas aproximadas do trajeto da esquadra de Cabral no mar
 trajeto_cabral <- list(
   c(38.7, -9.1),        # Lisboa
   c(28.1, -20.4),       # Ilhas Canárias
@@ -37,35 +37,35 @@ trajeto_cabral <- list(
   c(-16.443798, -39.065201 )# Chegada em terra
 )
 
-# Defina o ícone da caravela para os marcadores do trajeto
+# Define o ícone da caravela para os marcadores do trajeto
 icone_caravela <- makeIcon(iconUrl = "https://i.pinimg.com/originals/4c/d8/c7/4cd8c7ddefa587f5a948ed6b9f4f1287.png", iconWidth = 30, iconHeight = 30)
 icone_montanha <- makeIcon(iconUrl = "https://i.pinimg.com/originals/06/9d/1c/069d1c3863288113ee152e8c664704c7.png", iconWidth = 30, iconHeight = 30)
 
-# Crie o mapa
+# Cria o mapa
 mapa <- leaflet() %>%
-  addTiles() %>%
+  addProviderTiles("OpenTopoMap") %>%#adiciona um mapa especifico de topogrtafia link:https://leaflet-extras.github.io/leaflet-providers
   setView(lng = -9.1, lat = 38.7, zoom = 12)  # Centralize o mapa no oceano
 
-# Adicione a linha do trajeto da esquadra
+# Adiciona a linha do trajeto da esquadra
 mapa <- mapa %>%
   addPolylines(lng = sapply(trajeto_cabral, `[`, 2), lat = sapply(trajeto_cabral, `[`, 1),
                color = "blue", weight = 2)
 
 # Adicione os marcadores ao longo do trajeto
 for (i in 1:length(trajeto_cabral)) {
-  # Obtenha os dados do local atual
+  # Obtem os dados do local atual
   data <- dados_trajeto$data[i]
   descricao <- dados_trajeto$descricao[i]
   foto <- dados_trajeto$foto[i]
   fonte <- dados_trajeto$fonte[i]
   
-  # Crie o conteúdo do pop-up com a data, descrição, foto e fonte
+  # Cria um conteúdo do pop-up com a data, descrição, foto e fonte
   popup_content <- paste("<b>Data:</b> ", data,
                          "<br><b>Descrição:</b> ", descricao,
                          "<br><img src='", foto, "' alt='Foto' style='max-width: 200px'>",
                          "<br><b>Fonte:</b> <a href='", fonte, "' target='_blank'>", fonte, "</a>")
   
-  # Adicione o marcador ao mapa
+  # Adiciona o marcador ao mapa
   if (i == length(trajeto_cabral)) {
     # Último marcador com ícone de montanha
     mapa <- mapa %>%
@@ -79,10 +79,16 @@ for (i in 1:length(trajeto_cabral)) {
   }
 }
 
-# Exiba o mapa
+# Exibe o mapa
 mapa
 
 
 # Exibição interativa -----------------------------------------------------
 
-
+# mapa <- mapa %>%
+#   addControl(
+#     html = "<button id='btn-marcadores'>Exibir Marcadores</button>",
+#     position = "topright"
+#   )
+# 
+# mapa
