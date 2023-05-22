@@ -1,11 +1,62 @@
 ---
-title: "Educaser-Maps"
+title: "Capitanias"
+format: revealjs
+editor: visual
 ---
 
-This is a Quarto website.
-
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
 
 ```{r}
-1 + 1
+
+library(leaflet)
+
+coordenadas <- data.frame(
+  n = c("1 A", "2A", "3", "4", "1 B", "2B", "12A", "5", "6", "7", "8", "9", "10", "11A", "12B", "11B", "12C", "", ""),
+  SIGLA = c("MA1", "MA2", "PI", "CE", "RN1", "RN2", "IT", "PE", "BA", "IL", "PS", "ES", "ST", "SV1", "SA", "SV2", "ST", "Limite sul 28° e 1/3", "Linha de Tordesilhas"),
+  DONATARIO = c("Aires da Cunha", "João de Barros", "Fernando Álvares de Andrade", "António Cardoso de Barros", "Aires da Cunha", "João de Barros", "Pero Lopes de Sousa", "Duarte Coelho [Pereira]", "Francisco Pereira Coutinho", "Jorge de Figueiredo Correia", "Pedro do Campo Tourinho", "Vasco Fernandes Coutinho", "Pero de Góis [da Silveira]", "Martim Afonso de Sousa", "Pero Lopes de Sousa", "Martim Afonso de Sousa", "Pero Lopes de Sousa", "Limite sul 28° e 1/3", "Linha de Tordesilhas"),
+  LIMITE = c("Rio Turiaçú", "Ponto intermediário", "Ilha de Santana (oeste)", "Camocim", "Mucuripe", "Ponto intermediário", "Baia da Traição", "Sul da I. de Itamaracá", "Rio de São Francisco", "Sul da Baia de TS", "Rio Pardo", "Rio Mucuri", "Rio Itapemirim", "Rio Macaé", "Rio Juquiriquerê", "Barra da Bertioga", "Barra sul de Paranaguá", "48.70", "48.70"),
+  Lon = c(45.25, 44.36, 43.75, 40.85, 38.46, 36.66, 34.93, 34.85, 36.40, 38.81, 38.95, 39.56, 40.81, 41.78, 45.43, 46.13, 48.36, 48.70, 48.70),
+  Lat = c(1.64, 2.33, 2.36, 2.87, 3.72, 5.08, 6.68, 7.81, 10.50, 13.14, 15.65, 18.09, 21.00, 22.38, 23.71, 23.86, 25.55, 28.33, 0)
+)
+
+#temos que multiplicar por -1
+coordenadas$Lon <- -1*coordenadas$Lon
+coordenadas$Lat <- -1*coordenadas$Lat
+
+
+latitudes <- unique(coordenadas$Lat)
+
+# Criar um mapa com base nos dados das Capitanias Hereditárias
+mapa <- leaflet(coordenadas) %>%
+  addTiles() %>%
+  setView(lng = -45, lat = -15, zoom = 4)  # Configurar a visualização inicial do mapa
+
+# Adicionar marcadores para cada Capitania Hereditária
+mapa <- mapa %>%
+  addMarkers(
+    lng = ~Lon,
+    lat = ~Lat,
+    label = ~DONATARIO
+  )
+
+# Adicionar linhas latitudinais
+for (lat in latitudes) {
+  mapa <- mapa %>%
+    addPolylines(
+      data = NULL,
+      lng = c(-60, -30),  # Longitude para traçar a linha latitudinal
+      lat = c(lat, lat),  # Latitudes para traçar a linha latitudinal
+      color = "red",
+      weight = 2
+    )
+}
+
+
+
+
+
+```
+
+# mapa das capitanias
+```{r}
+mapa
 ```
