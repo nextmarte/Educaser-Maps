@@ -56,7 +56,7 @@ for (lat in latitudes) {
 
 ```
 
-# mapa das capitanias
+# mapa das capitanias hereditarias
 ```{r}
 mapa
 ```
