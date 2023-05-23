@@ -72,4 +72,5 @@ for (i in 1:length(trajeto_cabral)) {
 }
 
 # Exibe o mapa
-mapa
+mapa %>% 
+  addSidebar(id = "sidebar", options = list(position = "left"), ns = NULL)

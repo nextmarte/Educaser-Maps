@@ -43,18 +43,18 @@ popup_content <- paste("<b>Data:</b> ", dados_trajeto$data,
 
   
   
-  leaflet()  %>%
+ mapa_move <-  leaflet()  %>%
     addTiles() %>%
     addPolylines(lng = longitude, lat = latitude) %>%
     addMovingMarker(lng = longitude, lat = latitude,
-                    movingOptions = movingMarkerOptions(autostart = TRUE, loop = TRUE),
+                    movingOptions = movingMarkerOptions(autostart = TRUE, loop = FALSE),
                     label="Proxima parada: 'ÍNDIAS'!",
                     icon = icone_caravela,
                     popup=popup_content,
                     duration = 20000) %>% 
-    addProviderTiles("Stamen.Watercolor")
+    addProviderTiles("Stamen.Watercolor") 
 
   
   
-  
+  mapa_move
 
