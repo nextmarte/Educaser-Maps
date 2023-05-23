@@ -1,3 +1,10 @@
+library(leaflet)
+library(leaflet.extras2)
+library(htmltools)
+library(dplyr)
+library(sf)
+
+
 dados_trajeto <- data.frame(
   data = c("9 de março", "14 de março", "22 de março", "29 e 30 de março", "10 de abril", "18 de abril", "22 de abril", "22 de abril de 1500"),
   descricao = c("Zarparam de Lisboa", "Passaram pelas Ilhas Canárias", "Passaram por Cabo Verde",

@@ -6,7 +6,10 @@ library(htmltools)
 library(dplyr)
 library(sf)
 
-# Cria o data frame com os dados do trajeto
+
+# Cria o data frame com os dados do trajeto -------------------------------
+
+
 dados_trajeto <- data.frame(
   data = c("9 de março"),
   descricao = c("Partiu Pindorama"),
@@ -14,25 +17,34 @@ dados_trajeto <- data.frame(
   fonte = c("https://br.pinterest.com/pin/723038915162158193/"))
 
 
-# Define o GIF da caravela para os marcadores do trajeto
+
+# Define o GIF da caravela para os marcadores do trajeto ------------------
+
+
 icone_caravela <- makeIcon(iconUrl = "https://media0.giphy.com/media/xT1Ra1NBgzJbnyibIY/giphy.gif?cid=ecf05e47il4sdboedh38f389c59mgkh1kdxllduwyxgv3phq&ep=v1_gifs_related&rid=giphy.gif&ct=g", iconWidth = 50, iconHeight = 50)
 
 
-# Cria o mapa
+
+# Cria o mapa -------------------------------------------------------------
+
+
 mapa <- leaflet() %>%
   addProviderTiles("Stamen.Watercolor") %>%#adiciona um mapa especifico de topogrtafia link:https://leaflet-extras.github.io/leaflet-providers
   addProviderTiles("Stamen.TonerLabels") %>% # adiciona as legendas para localidade
   setView(lng = -9.1, lat = 38.7, zoom = 12) %>%  # Centralize o mapa no oceano
   addHistory()
 
-# Adiciona a linha do trajeto da esquadra
+
+# # Adiciona a linha do trajeto da esquadra -------------------------------
+
+
 mapa <- mapa %>%
   addPolylines(lng = sapply(trajeto_cabral, `[`, 2), lat = sapply(trajeto_cabral, `[`, 1),
                color = "blue", weight = 2)
 mapa
 
 
-  # moving marker -----------------------------------------------------
+# moving marker -----------------------------------------------------
 popup_content <- paste("<b>Data:</b> ", dados_trajeto$data,
                        "<br><b>Descrição:</b> ", dados_trajeto$descricao,
                        "<br><img src='", dados_trajeto$foto, "' alt='Foto' style='max-width: 200px'>",

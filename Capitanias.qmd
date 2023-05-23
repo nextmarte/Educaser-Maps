@@ -3,12 +3,24 @@ title: "Capitanias"
 format: html
 editor: visual
 ---
-A rota de Cabral
+### A rota de Cabral
 ```{r}
+#| echo: false
+#| include: true
+#| message: false
 source("scripts/scripts.R")
 
 mapa
 ```
 
+### Cabral não ficou parado
+
+```{r}
+#| echo: false
+#| include: true
+#| message: false
+source("scripts/script_timeline.R")
+mapa_move
+```
 
 
