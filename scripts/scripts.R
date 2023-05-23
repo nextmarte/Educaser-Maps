@@ -1,12 +1,3 @@
-
-# Exibição incial ---------------------------------------------------------
-
-
-library(leaflet)
-library(htmltools)
-library(dplyr)
-
-# Cria o data frame com os dados do trajeto
 dados_trajeto <- data.frame(
   data = c("9 de março", "14 de março", "22 de março", "29 e 30 de março", "10 de abril", "18 de abril", "22 de abril", "22 de abril de 1500"),
   descricao = c("Zarparam de Lisboa", "Passaram pelas Ilhas Canárias", "Passaram por Cabo Verde",
@@ -19,10 +10,10 @@ dados_trajeto <- data.frame(
            "https://t2.gstatic.com/licensed-image?q=tbn:ANd9GcSpKIVLoqlj8l5d4ttNxK8IDQeXnCJ9U1BParE5YwH-tymmHqvI8_aeojjt6_CeGN3q",
            "https://www.historia-brasil.com/bahia/mapas-historicos/mapa/mapa-luis-teixeira.jpg",
            "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Monte_P%C3%A1scoal.jpg/1920px-Monte_P%C3%A1scoal.jpg",
-           "https://s1.static.brasilescola.uol.com.br/be/2020/03/descobrimento-brasil.jpg"),
+           "https://blogdoaftm.com.br/wp-content/uploads/2021/04/4036.jpg"),
   fonte = c("FAPESP",
             "https://www.megatimes.com.br/2018/03/Canarias-Espanha.html",
-            "ONU", "enauti", "gstatic", "historia-brasil.com", "wikipedia", "Brasil Escola")
+            "ONU", "enauti", "gstatic", "historia-brasil.com", "wikipedia", "https://blogdoaftm.com.br")
 )
 
 # Define as coordenadas aproximadas do trajeto da esquadra de Cabral no mar
@@ -82,14 +73,3 @@ for (i in 1:length(trajeto_cabral)) {
 
 # Exibe o mapa
 mapa
-
-
-# Exibição interativa -----------------------------------------------------
-
-# mapa <- mapa %>%
-#   addControl(
-#     html = "<button id='btn-marcadores'>Exibir Marcadores</button>",
-#     position = "topright"
-#   )
-# 
-# mapa
