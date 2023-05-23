@@ -43,7 +43,8 @@ icone_montanha <- makeIcon(iconUrl = "https://i.pinimg.com/originals/06/9d/1c/06
 
 # Cria o mapa
 mapa <- leaflet() %>%
-  addProviderTiles("OpenTopoMap") %>%#adiciona um mapa especifico de topogrtafia link:https://leaflet-extras.github.io/leaflet-providers
+  addProviderTiles("Stamen.Watercolor") %>%#adiciona um mapa especifico de topogrtafia link:https://leaflet-extras.github.io/leaflet-providers
+  addProviderTiles("Stamen.TonerLabels") %>% # adiciona as legendas para localidade
   setView(lng = -9.1, lat = 38.7, zoom = 12)  # Centralize o mapa no oceano
 
 # Adiciona a linha do trajeto da esquadra
