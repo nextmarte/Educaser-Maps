@@ -2,8 +2,12 @@
 title: "Capitanias"
 format: html
 editor: visual
+runtime: shiny
+bibliography: references.bib
 ---
+
 ### A rota de Cabral
+
 ```{r}
 #| echo: false
 #| include: true
@@ -11,6 +15,7 @@ editor: visual
 source("scripts/scripts.R")
 
 mapa
+
 ```
 
 ### Cabral não ficou parado
@@ -23,4 +28,9 @@ source("scripts/script_timeline.R")
 mapa_move
 ```
 
+```{r}
+#| echo: false
 
+source("scripts/shinymap.R")
+shinyApp(ui, server)
+```

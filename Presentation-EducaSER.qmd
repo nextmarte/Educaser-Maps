@@ -1,0 +1,14 @@
+---
+title: "Apresentação Leaflet EducaSER"
+author: "Marcus Antonio Cardoso Ramalho"
+format: revealjs
+editor: visual
+---
+
+# Marcus Ramalho
+
+-   10 anos pra aprender a programar 🤦‍♂️
+
+-   Matlab/Fortran/Pascal/VBA/AutoLISP(LISP)/PHP/HTML/M(power query)/TypeScript/Python/R❤️e SQL
+
+-   
