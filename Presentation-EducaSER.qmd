@@ -3,6 +3,7 @@ title: "Apresentação Leaflet EducaSER"
 author: "Marcus Antonio Cardoso Ramalho"
 format: revealjs
 editor: visual
+bibliography: Itensexportados.bib
 ---
 
 ```{r}
@@ -13,6 +14,9 @@ editor: visual
 library(tidyverse)
 library(leaflet)
 library(leaflet.extras2)
+library(RgoogleMaps)
+library(readxl)
+
 ```
 
 # Marcus Ramalho
@@ -252,3 +256,330 @@ ou
 
 ![](img/Anima%C3%A7%C3%A3o_library_menu.gif)
 :::
+
+# Nosso primeiro mapa {style="font-size:20px"}
+
+No leaflet, assim como no ggplot2 trabalhamos em camadas, vamos criar a primeira e atribuir a um **objeto** chamado **mapa**
+
+::: panel-tabset
+## Codigo
+
+```{r}
+#| echo: true
+#| include: true
+
+
+mapa <- leaflet() %>% 
+addTiles()  
+
+
+class(mapa)
+
+```
+
+## ...mapa
+
+```{r}
+#| fig-height: 2
+#| fig-width: 12
+
+mapa
+```
+:::
+
+# Marcadores {style="font-size:25px"}
+
+Podemos adicionar marcadores e legendas ao nosso mapa, com a função setView podemos centralizar nossa visualização.
+
+```{r}
+#| echo: true
+#| include: true
+#| fig-height: 2
+#| fig-width: 12
+
+  mapa %>% 
+  addMarkers(lng = 0,lat = 0, label = "Nosso primeiro mapa")
+   
+  
+```
+
+# Criando ícones {style="font-size:25px"}
+
+```{r}
+#| echo: true
+#| include: true
+#| fig-height: 2
+#| fig-width: 12
+gif <- "https://media.tenor.com/n6w94xzL0DYAAAAM/don-ramon-el-chavo-del8.gif"
+
+#criando o objeto do tipo leaflet icon
+madruga <- makeIcon(iconUrl = gif,
+           iconWidth = 125,
+           iconHeight = 100)
+
+class(madruga)
+
+#coordenadas de acapulco
+acapulco <- c(16.823475, -99.855119)
+
+mapa %>%
+  addMarkers(lat = acapulco[1], lng = acapulco[2],
+             icon = madruga) %>% #agora basta chamar a variável icone dentro de addMarkers
+  setView(lat = acapulco[1], lng = acapulco[2], zoom = 15) 
+
+```
+
+# Criando Pop Ups {style="font-size:25px"}
+
+::: callout-note
+A função o Marker recebe os elementos interativos
+:::
+
+```{r}
+#| echo: true
+#| include: true
+#| fig-height: 3
+#| fig-width: 12
+Monuriki <- c(-17.610176, 177.033988)
+
+gif_2 <- "https://media.tenor.com/XnwgbA0jDYsAAAAC/fire-flame.gif"
+
+
+mapa_2 <- mapa %>% 
+  addMarkers(lat = Monuriki[1], lng = Monuriki[2],
+             label = "Cadê o wilson?!", 
+             popup=leafpop::popupImage(gif_2,src="remote")) %>% 
+  setView(lat = Monuriki[1], lng = Monuriki[2], zoom = 15) 
+  
+  mapa_2
+  
+  
+```
+
+# Unindo pontos {style="font-size:25px"}
+
+Usando a função `addPolylines()` podemos unir dois ou mais pontos
+
+```{r}
+#| echo: true
+#| include: true
+#| fig-height: 2
+#| fig-width: 12
+
+gif_3 <- "https://media.tenor.com/Zujt8vI4epgAAAAi/nelson-thatsportsspice.gif"
+
+wilson <- makeIcon(iconUrl = gif_3, 
+           iconWidth = 30,
+           iconHeight = 40)
+
+lat <- c(-17.610176,-17.610476)
+lon <- c(177.033988, 177.023988)
+
+linha <- data.frame(lat,lon) #cria um data frame com duas coordenadas
+
+mapa_2 %>% 
+  addPolylines(lat=linha$lat,lng=linha$lon) %>% #passa as coordenadas do df para a função
+  addMovingMarker(lat=linha$lat, #adiciona umanimação ao segundo marcador
+                  lng=linha$lon,
+                  icon = wilson,
+                  movingOptions = movingMarkerOptions(autostart = TRUE),
+                                                      duration = 10000)
+  
+```
+
+# Fechando os pontos
+
+Com a função addPolygons() conseguimos criar poligonos fechados
+
+```{r}
+
+#| echo: true
+#| include: true
+#| fig-height: 3
+#| fig-width: 12
+
+lat <- c(0,25,37,0,0)
+lng <- c(0,0,22,12,0)
+
+leaflet::leaflet() %>% 
+  addTiles() %>% 
+  addPolygons(lat = lat,lng = lng, 
+              fillColor = "red")
+```
+
+# Outros providers {style="font-size:25px"}
+
+*https://leaflet-extras.github.io/leaflet-providers/preview/*
+
+<div>
+
+<iframe src="https://leaflet-extras.github.io/leaflet-providers/preview/" width="1900" height="550">
+
+</iframe>
+
+</div>
+
+# Aplicando outros providers... {style="font-size:25px"}
+
+```{r}
+#| echo: true
+#| include: true
+#| fig-height: 5
+#| fig-width: 12
+
+leaflet() %>% 
+addProviderTiles("Stamen.TerrainBackground")
+
+
+```
+
+# Camadas e grupos {style="font-size:25px"}
+
+Podemos adicionar ainda mais camadas usando a função *`addLayersControl()`* e controlar criando grupos
+
+```{r}
+#| echo: true
+#| include: true
+#| fig-height: 3
+#| fig-width: 12
+leaflet() %>%
+  addProviderTiles("Stamen.TerrainBackground", group = "Terreno") %>%
+  addProviderTiles("Stamen.TerrainLabels", group = "Legenda") %>%
+  addCircleMarkers(lng = 0, lat = 0, group = "Marcador") %>%
+  addLayersControl(
+    baseGroups = c("Terreno"),#grupo primário
+    overlayGroups = c("Marcador", "Legenda")
+  ) %>% #grupos secundarios. Pode marcar mais de 1.
+  setView(lat = 0, lng = 0, zoom = 2) %>%
+  hideGroup("Legenda") #esconde um ou mais grupos da visualização
+
+
+```
+
+# Tá, mas e na prática? {style="font-size:25px"}
+
+Um exemplo com dados do inicio da pandemia:
+
+\tiny
+
+```{r}
+#| echo: true
+#| include: true
+#| cache: true
+
+disresp <-as.data.frame(read.csv("https://raw.githubusercontent.com/nextmarte/baserespiradoresmbauff/main/disresp.csv"))
+
+#criando uma tabela com os estados, a quantidade de respiradores enviados e as coordenadas geograficas
+
+estados<-disresp %>%#tabela base
+  select(DESTINO,VALOR) %>%
+  #transforma a coluna valor em numérica
+  mutate(VALOR = parse_number(str_remove_all(VALOR, "[R$,]"))) %>% 
+  group_by(DESTINO) %>% 
+  #quantidade total de respiradores por estado
+  dplyr::summarize(Valor_total=sum(VALOR))   
+  
+
+geoestados<-unique(estados$DESTINO) %>% 
+  #gerando as coordenadas geograficas para cada estado gerando um df
+  plyr::ldply( function(x) RgoogleMaps::getGeoCode(x)) %>% 
+  #data frame com as coordendas, destinos e quantidades
+data.frame(estados)
+
+
+map_resp <- leaflet(geoestados) %>%
+  addTiles(group = "base") %>% 
+  addProviderTiles("Esri.DeLorme", group = "Terreno") %>% 
+addMarkers(clusterOptions = 
+             markerClusterOptions(removeOutsideVisibleBounds = TRUE),
+  popup = ~ as.character(Valor_total),
+  group = "cluster") %>%
+  addCircleMarkers( 
+#aqui o reescale ajusta os valores da variável para não extrapolar a visualização    
+    radius = ~ scales::rescale(Valor_total, c(1, 25)),
+    group = "circulos",
+    label = ~ as.character(DESTINO)) %>% 
+    addLayersControl(
+    baseGroups = c("OSM", "Terreno"),
+    overlayGroups = c("cluster", "circulos")) %>% 
+  hideGroup("OSM")
+
+
+
+```
+
+\normalisize
+
+# Ta pronto... {style="font-size:25px"}
+
+```{r}
+map_resp
+
+```
+
+# Voltando ao Brasil com as capitanias hereditárias {style="font-size:20px"}
+
+Acho que todo mundo já viu um desses
+
+![](img/capitaniasmec.png)
+
+# Bartolomeu Velho {style="font-size:20px"}
+
+Mapa mais antigo disponível mostrando as capitanias hereditarias
+
+![](img/bartolomeumap.png)
+
+# Adolfo de Varnhagen {style="font-size:20px"}
+
+::: columns
+::: {.column width="40%"}
+![Francisco Adolfo de Varnhagen, visconde de Porto Seguro foi um militar, diplomata e historiador brasileiro](https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Francisco_Adolfo_de_Varnhagen.jpg/200px-Francisco_Adolfo_de_Varnhagen.jpg){width="80%"}
+:::
+
+::: {.column width="60%"}
+![](img/capitanias.jpg){width="70%"}
+:::
+:::
+
+# Jorge Pimentel Cintra {style="font-size:20px"}
+
+::: columns
+::: {.column width="40%"}
+Reconstruindo o mapa das Capitanias Hereditárias
+
+![](https://sites.usp.br/ptr-ltg/wp-content/uploads/sites/685/2021/10/JPCintra-298x300.png)
+:::
+
+::: {.column width="60%"}
+![Proposta para o mapa das capitanias - Jorge Cintra](img/capitaniascintra.png){width="50%"}
+:::
+:::
+
+# Bibliografia {style="font-size:25px"}
+
+*Brazil \| History, Map, Culture, Population, & Facts \| Britannica*. (2023, maio 25). <https://www.britannica.com/biography/Pedro-Alvares-Cabral>
+
+Cintra, J. P. (2013). Reconstruindo o mapa das capitanias hereditárias. *Anais do Museu Paulista: História e Cultura Material*, *21*(2), 11--45. <https://doi.org/10.1590/S0101-47142013000200002>
+
+*Leaflet Provider Demo*. (\[s.d.\]). Recuperado 26 de maio de 2023, de <https://leaflet-extras.github.io/leaflet-providers/preview/>
+
+*Leaflet---An open-source JavaScript library for interactive maps*. (\[s.d.\]). Recuperado 26 de maio de 2023, de <https://leafletjs.com/>
+
+*leaflet-extras/leaflet-providers: An extension to Leaflet that contains configurations for various free tile providers.* (\[s.d.\]). Recuperado 26 de maio de 2023, de <https://github.com/leaflet-extras/leaflet-providers>
+
+Loecher, M. (2020). *RgoogleMaps: Overlays on Static Maps* (1.4.5.3). <https://cran.r-project.org/web/packages/RgoogleMaps/index.html>
+
+Sebastian, G., Basa, R. R., & Hanson, J. O. (2023). *leaflet.extras2: Extra Functionality for "leaflet" Package* (1.2.1). <https://cran.r-project.org/web/packages/leaflet.extras2/index.html>
+
+*Vasco da Gama \| Biography, Achievements, Route, Map, Significance, & Facts \| Britannica*. (2023, maio 16). <https://www.britannica.com/biography/Vasco-da-Gama>
+
+Wickham, H., & RStudio. (2023). *tidyverse: Easily Install and Load the "Tidyverse"* (2.0.0). <https://cran.r-project.org/web/packages/tidyverse/index.html>
+
+# Obrigado!!
+
+
+marcusantonio\@id.uff.br![](https://cdn-icons-png.flaticon.com/512/6711/6711567.png){width="5%"}
+
+nextmarcus [![](https://cdn-icons-png.flaticon.com/512/124/124021.png){width="5%"}](https://twitter.com/nextmarcus)
+
+nextmarte [![](https://cdn3.iconfinder.com/data/icons/sociocons/256/github-sociocon.png){width="6%"}](https://github.com/nextmarte)

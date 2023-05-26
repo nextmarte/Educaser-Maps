@@ -5,9 +5,9 @@ website:
   title: "O novo mapa das capitanias hereditárias"
   navbar:
     left:
-      - href: Capitanias.qmd
+      - href: Presentation-EducaSER.qmd
         text: Início
-      - Presentation-EducaSER.qmd
+      - about.qmd
 
 format:
   html:

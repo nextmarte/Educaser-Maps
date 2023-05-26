@@ -91,8 +91,15 @@ mapa_move <-  leaflet()  %>%
 
 mapa_move <- mapa_move %>% 
   addLayersControl(overlayGroups = c("rota","Frota")) %>% 
-  hideGroup(c("rota"))
+  hideGroup(c("rota")) %>% 
+  pauseMoving(layerId = "Frota") 
   
   
+  
+
+  
+mapa_move 
+
+
 
 
