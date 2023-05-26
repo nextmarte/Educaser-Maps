@@ -5,10 +5,153 @@ format: revealjs
 editor: visual
 ---
 
+```{r}
+#| echo: false
+#| include: false
+#| message: false
+
+library(tidyverse)
+library(leaflet)
+library(leaflet.extras2)
+```
+
 # Marcus Ramalho
 
 -   10 anos pra aprender a programar 🤦‍♂️
 
--   Matlab/Fortran/Pascal/VBA/AutoLISP(LISP)/PHP/HTML/M(power query)/TypeScript/Python/R❤️e SQL
+-   Matlab/Fortran/Pascal/VBA/AutoLISP(LISP)/PHP/HTML/\
+    M(power query)/TypeScript/Python/R❤️e SQL
 
--   
+-   Historia
+
+-   Mapas
+
+# Nossos objetivos hoje {style="font-size:25px"}
+
+-   Aprender ou reaprender um pouco sobre história criando mapas
+
+-   Aprender as principais funções e métodos do pacotes leaflet
+
+-   Criar um projeto Quarto
+
+-   Criar um mapa interativo mostrando um pedaço da história do Brasil
+
+-   Publicar o projeto com a ajuda do github pages
+
+# Um pouco de história {style="font-size:25px"}
+
+::: columns
+::: {.column width="40%"}
+-   Antes de 1500
+
+-   Pindorama para os Tupis ou terra das palmeiras
+:::
+
+::: {.column width="60%"}
+```{r}
+
+coorde <- rio::import("dados/coordenadas_costa_Brasil_escala.csv")
+
+leaflet::leaflet() %>%
+  addTiles() %>% 
+  addProviderTiles("Stamen.Watercolor") %>% 
+  setView(lng = -50.598879, lat = -13.550627, zoom = 3) %>%
+    addMarkers(
+    data = coorde,
+    lng = ~lon,
+    lat = ~lat,
+    icon = leaflet::makeIcon(
+      iconUrl = "https://cdn.kibrispdr.org/data/765/palm-tree-gif-6.gif",
+      iconWidth = 25, iconHeight = 41
+    )
+  )
+  
+```
+:::
+:::
+
+# ...1500
+
+```{r}
+
+
+# Coordenadas de Portugal
+portugal <- data.frame(
+  cidade = "Portugal",
+  lat = 39.3999,
+  lon = -8.2245
+)
+
+# Coordenadas das cidades mencionadas
+destinos <- data.frame(
+  cidade = c(
+    "Malaca",
+    "Calicut",
+    "Alexandria",
+    "Cairo",
+    "Zanzibar",
+    "Mogadíscio",
+    "Goa",
+    "Ormuz",
+    "Sofala",
+    "Aden"
+  ),
+  lat = c(
+    2.1896,
+    11.2588,
+    31.2156,
+    30.0444,
+    -6.1659,
+    2.0411,
+    15.2993,
+    26.5944,
+    -19.1386,
+    12.7967
+  ),
+  lon = c(
+    102.2501,
+    75.7804,
+    29.9553,
+    31.2357,
+    39.2026,
+    45.3438,
+    74.1240,
+    56.3630,
+    34.8292,
+    45.0365
+  )
+)
+
+# Criar o mapa
+maparotas <- leaflet() %>%
+  addProviderTiles("OpenStreetMap.Mapnik") %>%
+  addMarkers(
+    data = portugal,
+    lat = ~ lat,
+    lng = ~ lon,
+    label = ~ cidade,
+    labelOptions = labelOptions(noHide = TRUE),
+    icon = leaflet::makeIcon(
+      iconUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Flag_of_Portugal_sea_%281500%29.svg/800px-Flag_of_Portugal_sea_%281500%29.svg.png",
+      iconWidth = 40,
+      iconHeight = 40
+    )
+  ) %>%
+  addMarkers(
+    data = destinos,
+    lat = ~ lat,
+    lng = ~ lon,
+    label = ~ cidade,
+    labelOptions = labelOptions(noHide = TRUE),
+    icon = leaflet::makeIcon(
+      iconUrl = "https://static.vecteezy.com/system/resources/previews/009/665/828/original/colorful-cute-cartoon-vegetable-garlic-free-png.png",
+      iconWidth = 25,
+      iconHeight = 41
+    )
+  ) %>% 
+  addProviderTiles("Stamen.Watercolor")
+
+# Exibir o mapa
+maparotas
+
+```
