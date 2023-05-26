@@ -6,8 +6,7 @@ website:
   navbar:
     left:
       - href: Presentation-EducaSER.qmd
-        text: Início
-      - about.qmd
+
 
 format:
   html:

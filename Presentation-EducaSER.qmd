@@ -2,8 +2,9 @@
 title: "Apresentação Leaflet EducaSER"
 author: "Marcus Antonio Cardoso Ramalho"
 format: revealjs
+logo: "https://raw.githubusercontent.com/nextmarte/TalkProposal/main/img/logoSER_transparente.png"
+footer: "Marcus Ramalho - PPGAd-UFF"
 editor: visual
-bibliography: Itensexportados.bib
 ---
 
 ```{r}
@@ -551,6 +552,8 @@ Reconstruindo o mapa das Capitanias Hereditárias
 :::
 
 ::: {.column width="60%"}
+Vamos tentar reproduzir alguns pontos deste mapa com leaflet.
+
 ![Proposta para o mapa das capitanias - Jorge Cintra](img/capitaniascintra.png){width="50%"}
 :::
 :::
@@ -576,7 +579,6 @@ Sebastian, G., Basa, R. R., & Hanson, J. O. (2023). *leaflet.extras2: Extra Func
 Wickham, H., & RStudio. (2023). *tidyverse: Easily Install and Load the "Tidyverse"* (2.0.0). <https://cran.r-project.org/web/packages/tidyverse/index.html>
 
 # Obrigado!!
-
 
 marcusantonio\@id.uff.br![](https://cdn-icons-png.flaticon.com/512/6711/6711567.png){width="5%"}
 
