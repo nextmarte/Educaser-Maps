@@ -53,18 +53,24 @@ library(leaflet.extras2)
 coorde <- rio::import("dados/coordenadas_costa_Brasil_escala.csv")
 
 leaflet::leaflet() %>%
-  addTiles() %>% 
-  addProviderTiles("Stamen.Watercolor") %>% 
-  setView(lng = -50.598879, lat = -13.550627, zoom = 3) %>%
-    addMarkers(
+  addTiles() %>%
+  addProviderTiles("Stamen.Watercolor") %>%
+  setView(lng = -50.598879,
+          lat = -13.550627,
+          zoom = 3) %>%
+  addMarkers(
     data = coorde,
-    lng = ~lon,
-    lat = ~lat,
+    group = "palmeiras",
+    lng = ~ lon,
+    lat = ~ lat,
     icon = leaflet::makeIcon(
       iconUrl = "https://cdn.kibrispdr.org/data/765/palm-tree-gif-6.gif",
-      iconWidth = 25, iconHeight = 41
+      iconWidth = 25,
+      iconHeight = 41
     )
-  )
+  ) %>%
+  addLayersControl(overlayGroups = "palmeiras") %>%
+  hideGroup("palmeiras")
   
 ```
 :::
@@ -166,3 +172,83 @@ maparotas %>%
   
 
 ```
+
+# Isso não tava nos planos... {style="font-size:25px"}
+
+```{r}
+source("scripts/script_timeline.r")
+
+mapa_move
+
+```
+
+# Terra a vista!! {style="font-size:25px"}
+
+```{r}
+source("scripts/scripts.r")
+mapa
+```
+
+# Paro Paro Paro {style="font-size:25px"}
+
+![](https://media.tenor.com/WD1FFAiQE1oAAAAC/jo%25C3%25A3o-kleber-stop.gif){width="100%"}
+
+# Vamos falar de : {style="font-size:25px"}
+
+![](https://i.pinimg.com/originals/70/c5/19/70c519a4476f442f4ec67f39e9f4b6e1.png)
+
+# Introdução ao leaflet {style="font-size:25px"}
+
+-   O Leaflet é uma biblioteca JavaScript de código aberto para criação de mapas interativos em páginas da web.
+
+-   É leve, flexível e fácil de usar.
+
+-   Suporta vários provedores de mapas, incluindo OpenStreetMap, Mapbox e Google Maps.
+
+# Recursos do Leaflet {style="font-size:25px"}
+
+-   Exibe mapas interativos em páginas da web.
+
+-   Adiciona camadas de informações, como marcadores, polígonos e linhas.
+
+-   Permite interações com os mapas, como zoom e movimento.
+
+-   Oferece suporte a eventos de interação, como clique em marcadores.
+
+-   Suporta personalização da aparência dos mapas e camadas.
+
+# leaflet no R {style="font-size:25px"}
+
+O CRAM possui alguns pacotes que permitem usar os recursos do leaflet:
+
+-   Pacote **leaflet** - Cria os mapas com dados geoespaciais (latitude e longitude)
+
+-   Pacote **htmlwidgets** - viabiliza a renderização do leaflet no R
+
+-   **leaflet.extras** e **leaflet.extras2**
+
+-   **leafpop** para adicionar imagens, tabelas e gráficos aos mapas
+
+-   Outros...
+
+# Instalação {style="font-size:25px"}
+
+Vamos usar os pacotes disponíveis no CRAN
+
+No RStudio: Digite no console **install.packages("leaflet")**
+
+ou
+
+![](img/Anima%C3%A7%C3%A3o_install.gif){fig-align="center"}
+
+# Carregamento
+
+::: panel-tabset
+## Library
+
+![](img/Anima%C3%A7%C3%A3o_library.gif)
+
+## Menu do RStudio
+
+![](img/Anima%C3%A7%C3%A3o_library_menu.gif)
+:::

@@ -72,13 +72,13 @@ icone_montanha <-
 
 # Cria o mapa
 mapa <- leaflet() %>%
-  addProviderTiles("Stamen.Watercolor") %>%#adiciona um mapa especifico de topogrtafia link:https://leaflet-extras.github.io/leaflet-providers
-  addProviderTiles("Stamen.TonerLabels") %>% # adiciona as legendas para localidade
-  setView(lng = -9.1, lat = 38.7, zoom = 12)  # Centralize o mapa no oceano
+  addProviderTiles("Stamen.Watercolor",group = "Velho Mundo") %>%#adiciona um mapa especifico de topogrtafia link:https://leaflet-extras.github.io/leaflet-providers
+  addProviderTiles("OpenStreetMap.Mapnik", group = "Fronteiras") %>% # adiciona as legendas para localidade
+  setView(lng = -9.1, lat = 38.7, zoom = 2)  # Centralize o mapa no oceano
 
 # Adiciona a linha do trajeto da esquadra
 mapa <- mapa %>%
-  addPolylines(
+  addPolylines(group = "Rota",
     lng = sapply(trajeto_cabral, `[`, 2),
     lat = sapply(trajeto_cabral, `[`, 1),
     color = "blue",
@@ -122,7 +122,7 @@ for (i in 1:length(trajeto_cabral)) {
   } else {
     # Marcadores intermediários com ícone da caravela
     mapa <- mapa %>%
-      addMarkers(
+      addMarkers(group = "Frota",
         lng = trajeto_cabral[[i]][2],
         lat = trajeto_cabral[[i]][1],
         icon = icone_caravela,
@@ -132,7 +132,5 @@ for (i in 1:length(trajeto_cabral)) {
 }
 
 # Exibe o mapa
-mapa %>%
-  addSidebar(id = "sidebar",
-             options = list(position = "left"),
-             ns = NULL)
+mapa <- mapa %>% 
+  addLayersControl(baseGroups = c("Velho Mundo","Fronteiras"),overlayGroups = c("Rota","Frota"))
