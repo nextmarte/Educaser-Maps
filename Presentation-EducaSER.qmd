@@ -124,7 +124,8 @@ destinos <- data.frame(
 
 # Criar o mapa
 maparotas <- leaflet() %>%
-  addProviderTiles("OpenStreetMap.Mapnik") %>%
+  addTiles(group = "OpenStreetMap") %>% 
+  addProviderTiles("Stamen.Watercolor", group = "Mapa Velho")%>%
   addMarkers(
     data = portugal,
     lat = ~ lat,
@@ -139,6 +140,7 @@ maparotas <- leaflet() %>%
   ) %>%
   addMarkers(
     data = destinos,
+    group = "cidades",
     lat = ~ lat,
     lng = ~ lon,
     label = ~ cidade,
@@ -149,9 +151,18 @@ maparotas <- leaflet() %>%
       iconHeight = 41
     )
   ) %>% 
-  addProviderTiles("Stamen.Watercolor")
+  addPolylines(data=rio::import("dados/rota_vasco.csv"),
+               lat = ~ lat,
+               lng = ~ lon, group = "rota do vasco")
 
-# Exibir o mapa
-maparotas
+
+# Exibir o mapa com opções de exibição
+maparotas %>% 
+  addLayersControl(
+    baseGroups = c("Mapa Velho","Novo Mundo"),
+    overlayGroups = c("rota do vasco","cidades"),
+    options = layersControlOptions(collapsed = TRUE, autoZIndex = TRUE)) %>% 
+  hideGroup(c("rota do vasco","cidades"))#controla os grupos que irão aparecer
+  
 
 ```
