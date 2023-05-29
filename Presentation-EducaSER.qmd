@@ -504,9 +504,6 @@ addMarkers(clusterOptions =
     baseGroups = c("OSM", "Terreno"),
     overlayGroups = c("cluster", "circulos")) %>% 
   hideGroup("OSM")
-
-
-
 ```
 
 \normalisize
